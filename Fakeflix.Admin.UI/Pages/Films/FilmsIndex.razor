@@ -6,6 +6,7 @@
             <th>Free</th>
             <th>Genres</th>
             <th>Description</th>
+            <th>Released</th>
             <th>URL</th>
             <th></th>
         </tr>
@@ -16,10 +17,11 @@
             <tr>
                 <td>@item.Title</td>
                 <td>@item.Director.Name</td>
-                <td>@(item.Free ? "Free" : "")</td>
+                <td>@(item.Free ? "Free" : "Premium")</td>
                 <td>@string.Join(", ", item.Genres.Select(genre => genre.Name))</td>
                 <td>@item.Description.Truncate(50)</td>
-                <td>@item.FilmUrl</td>
+                <td>@item.Released.ToShortDateString()</td>
+                <td>@(item.FilmUrl.Length > 5 ? $"{item.FilmUrl.Substring(0, 5)}..." : item.FilmUrl)</td>
                 <td>
                     <div class="d-flex me-1 justify-content-end">
                         <button class="btn btn-outline-primary rounded-0 me-1" @onclick="@(() => OnClick.InvokeAsync(new ClickModel(PageType.Edit, item.Id)))">Edit</button>
