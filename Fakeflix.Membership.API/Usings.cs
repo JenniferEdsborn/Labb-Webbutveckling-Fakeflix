@@ -1,0 +1,9 @@
+﻿global using Fakeflix.Membership.Database.Contexts;
+global using Microsoft.EntityFrameworkCore;
+global using Fakeflix.Common.DTOs;
+global using Fakeflix.Membership.Database.Entities;
+global using Fakeflix.Membership.Database.Services;
+global using Microsoft.AspNetCore.Mvc;
+global using System.Text.Json.Serialization;
+global using System.Text.Json;
+global using Fakeflix.Membership.API.Utilities;
