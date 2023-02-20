@@ -11,10 +11,6 @@
             {
                 <InputText id="title" class="form-control me-2" @bind-Value="Model.Title" disabled placeholder="Title"></InputText>
             }
-@*            else
-            {
-                <InputText id="title" class="form-control me-2" @bind-Value="Model.Title" placeholder="Title2"></InputText>
-            }*@
             <ValidationMessage For="@(() => Model.Title)" />
         </div>
 
@@ -61,26 +57,30 @@
 
             <div class="mb-3">
                 <label for="director">Director</label>
-                <InputSelect id="director" class="form-control" @bind-Value="Model.DirectorId">
-                    <option value="0">Select a director</option>
-                    @foreach (var director in Directors)
-                    {
-                        <option value="@director.Id">@director.Name</option>
-                    }
-                </InputSelect>
+                <div class="select-wrapper">
+                    <InputSelect id="director" class="form-select" @bind-Value="Model.DirectorId">
+                        <option value="0">Select a director</option>
+                        @foreach (var director in Directors)
+                        {
+                            <option value="@director.Id">@director.Name</option>
+                        }
+                    </InputSelect>
+                    <i class="bi bi-caret-down"></i>
+                </div>
             </div>
 
-@*            <div class="mb-3">
-                <label for="genres">Genre</label>
-                <InputSelect id="genres" class="form-control" multiple @bind-Value="Model.Genres">
-                    <option value="0">Select genre</option>
+            <div>
+                <label for="genres">Genres</label>
+            </div>
+
+            <div class="mb-3">
+                <InputSelect id="genres" class="form-select" @bind-Value="SelectedValues">
                     @foreach (var genre in Genres)
                     {
                         <option value="@genre.Id">@genre.Name</option>
                     }
                 </InputSelect>
-            </div>*@
-
+            </div>
         }
         <button type="submit" class="btn btn-@(Page.Equals(PageType.Delete) ? "danger" : "primary") rounded-0">@Page</button>
     </EditForm>
@@ -88,22 +88,90 @@
 
 @code {
     [Parameter] public FilmDTO Model { get; set; } = new FilmDTO { Released = DateTime.Now };
+    [Parameter] public FilmGenreDTO GenreModel { get; set; } = new();
     [Parameter] public string Page { get; set; } = string.Empty;
     [Parameter] public EventCallback<string> OnChange { get; set; }
+
     List<DirectorDTO> Directors { get; set; } = new();
     List<GenreDTO> Genres { get; set; } = new();
+    List<FilmGenreCreateDTO> FilmGenres { get; set; } = new List<FilmGenreCreateDTO>();
 
+    EditContext? EditContext { get; set; }
+    public int[] SelectedValues { get; set; } = new int[] { };
 
     protected override async Task OnInitializedAsync()
     {
+        EditContext = new(SelectedValues);
+        SelectedValues = Model.Genres.Select(g => g.Id).ToArray();
+
         Directors = await AdminService.GetAsync<DirectorDTO>("director");
         Genres = await AdminService.GetAsync<GenreDTO>("genre");
+        FilmGenres = await AdminService.GetAsync<FilmGenreCreateDTO>("filmgenre");
     }
 
     private async Task OnFormSubmit()
     {
         try
         {
+            if (Model.Description == null)
+                Model.Description = "Lorem Ipsum";
+
+            if (Model.Director == null)
+                Model.DirectorId = 5;
+
+            if (SelectedValues.Length > 0)
+            {
+                foreach (var filmGenre in FilmGenres)
+                {
+                    if (filmGenre.FilmId == Model.Id)
+                    {
+
+
+
+                        //foreach (var genre in Genres)
+                        //{
+                        //    //await AdminService.DeleteAsync<FilmGenreDTO>($"filmgenre/{Model.Id}/{genre.Id}");
+                        //await AdminService.DeleteAsync<FilmGenreDTO>($"https://localhost:5001/api/filmgenre/{filmGenre.FilmId}/{filmGenre.GenreId}");
+                    //}
+                    }
+                }
+
+                foreach (int id in SelectedValues)
+                {
+                    GenreModel = new FilmGenreDTO
+                        {
+                            FilmId = Model.Id,
+                            GenreId = id
+                        };
+
+                    await AdminService.CreateAsync<FilmGenreDTO>("filmgenre", GenreModel);
+                }
+
+                // Update the Model with the selected genres
+                //Model.Genres = Genres.Where(genre => SelectedValues.Contains(genre.Id)).ToList();
+            }
+
+            //Model.Genres = SelectedValues.Select(id => new GenreDTO { Id = id }).ToList();
+
+            // Remove genres that have been unselected
+            //Model.Genres.RemoveAll(g => !SelectedValues.Contains(g.Id));
+
+            //foreach (var id in SelectedValues)
+            //{
+            //    if (!Model.Genres.Any(g => g.Id == id))
+            //    {
+            //        Model.Genres.Add(new GenreDTO { Id = id });
+            //    }
+            //}
+
+            //foreach (var genre in Genres)
+            //{
+            //    if (SelectedValues.Contains(genre.Id) && !Model.Genres.Any(g => g.Id == genre.Id))
+            //    {
+            //        Model.Genres.Add(genre);
+            //    }
+            //}
+
             if (Page.Equals(PageType.Create))
                 await AdminService.CreateAsync<FilmDTO>("film", Model);
             else if (Page.Equals(PageType.Edit))
@@ -118,4 +186,79 @@
             await OnChange.InvokeAsync("Couldn't create/edit/delete the film.");
         }
     }
+   
+
+    //private async Task OnFormSubmit()
+    //{
+    //    try
+    //    {
+    //        if (Model.Description == null)
+    //            Model.Description = "Lorem Ipsum";
+
+    //        if (Model.Director == null)
+    //            Model.DirectorId = 5;
+
+    //        Model.Genres = FilmGenres.Select(fg => new GenreDTO { Id = fg.GenreId }).ToList();
+
+    //        if (Page.Equals(PageType.Create))
+    //        {
+    //            await AdminService.CreateAsync<FilmDTO>("film", Model);
+    //            foreach (var fg in FilmGenres)
+    //            {
+    //                await AdminService.CreateAsync<FilmGenreDTO>("filmgenre", new FilmGenreDTO
+    //                    {
+    //                        FilmId = Model.Id,
+    //                        GenreId = fg.GenreId
+    //                    });
+    //            }
+    //        }
+    //        else if (Page.Equals(PageType.Edit))
+    //        {
+    //            await AdminService.EditAsync<FilmDTO>($"film/{Model.Id}", Model);
+    //            var currentFilmGenres = await AdminService.GetAsync<List<FilmGenreDTO>>($"film/{Model.Id}/genres");
+
+    //            foreach (var fg in FilmGenres)
+    //            {
+    //                if (!currentFilmGenres.Any(cfg => cfg. == fg.GenreId))
+    //                {
+    //                    await AdminService.CreateAsync<FilmGenreDTO>("filmgenre", new FilmGenreDTO
+    //                        {
+    //                            FilmId = Model.Id,
+    //                            GenreId = fg.GenreId
+    //                        });
+    //                }
+    //            }
+
+    //            foreach (var cfg in currentFilmGenres)
+    //            {
+    //                if (!FilmGenres.Any(fg => fg.GenreId == cfg.Genre.Id))
+    //                {
+    //                    await AdminService.DeleteAsync<FilmGenreDTO>($"filmgenre/{cfg.Id}");
+    //                }
+    //            }
+    //        }
+    //        else if (Page.Equals(PageType.Delete))
+    //            await AdminService.DeleteAsync<FilmDTO>($"film/{Model.Id}");
+
+    //        await OnChange.InvokeAsync("");
+    //    }
+    //    catch
+    //    {
+    //        await OnChange.InvokeAsync("Couldn't create/edit/delete the film.");
+    //    }
+    //}
+
+
+    // Update the list of genres
+    //Model.Genres = new List<GenreDTO>();
+    //foreach (var genreId in SelectedValues)
+    //{
+    //    var genre = Genres.FirstOrDefault(g => g.Id == genreId);
+    //    if (genre != null)
+    //    {
+    //        Model.Genres.Add(genre);
+    //    }
+    //}
+
+
 }
