@@ -1,4 +1,7 @@
-﻿using System.Text;
+﻿using Fakeflix.Common.DTOs;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Text;
 
 namespace Fakeflix.Common.Services;
 
@@ -85,5 +88,20 @@ public class AdminService : IAdminService
             response.EnsureSuccessStatusCode();
         }
         catch { throw; }
+    }
+    public async Task DeleteAsync<TDto>(string uri, TDto dto)
+    {       
+        try
+        {
+            var requestMessage = new HttpRequestMessage(HttpMethod.Delete, uri);
+            requestMessage.Content = JsonContent.Create(dto);
+            using var response = await _http.Client.SendAsync(requestMessage);
+            response.EnsureSuccessStatusCode();
+            requestMessage.Dispose();
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
     }
 }

@@ -51,10 +51,10 @@ void ConfigureServices()
         .ForMember(d => d.Genres, s => s.Ignore())
         .ForMember(d => d.SimilarFilms, s => s.Ignore());
 
-        cfg.CreateMap<DirectorCreateDTO, Director>();
-        cfg.CreateMap<GenreCreateDTO, Genre>();
-        cfg.CreateMap<FilmGenreCreateDTO, FilmGenre>();
-        cfg.CreateMap<SimilarFilmsCreateDTO, SimilarFilms>();
+        cfg.CreateMap<DirectorCreateDTO, Director>().ReverseMap();
+        cfg.CreateMap<GenreCreateDTO, Genre>().ReverseMap();
+        cfg.CreateMap<FilmGenreCreateDTO, FilmGenre>().ReverseMap();
+        cfg.CreateMap<SimilarFilmsCreateDTO, SimilarFilms>().ReverseMap();
     });
     var mapper = config.CreateMapper();
     builder.Services.AddSingleton(mapper);

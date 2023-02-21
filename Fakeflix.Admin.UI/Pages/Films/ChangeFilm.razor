@@ -125,14 +125,11 @@
                 {
                     if (filmGenre.FilmId == Model.Id)
                     {
-
-
-
-                        //foreach (var genre in Genres)
-                        //{
-                        //    //await AdminService.DeleteAsync<FilmGenreDTO>($"filmgenre/{Model.Id}/{genre.Id}");
-                        //await AdminService.DeleteAsync<FilmGenreDTO>($"https://localhost:5001/api/filmgenre/{filmGenre.FilmId}/{filmGenre.GenreId}");
-                    //}
+                        await AdminService.DeleteAsync<FilmGenreDTO>($"filmgenre", new FilmGenreDTO
+                            {
+                                FilmId = Model.Id,
+                                GenreId = filmGenre.GenreId
+                            });
                     }
                 }
 
@@ -146,31 +143,7 @@
 
                     await AdminService.CreateAsync<FilmGenreDTO>("filmgenre", GenreModel);
                 }
-
-                // Update the Model with the selected genres
-                //Model.Genres = Genres.Where(genre => SelectedValues.Contains(genre.Id)).ToList();
-            }
-
-            //Model.Genres = SelectedValues.Select(id => new GenreDTO { Id = id }).ToList();
-
-            // Remove genres that have been unselected
-            //Model.Genres.RemoveAll(g => !SelectedValues.Contains(g.Id));
-
-            //foreach (var id in SelectedValues)
-            //{
-            //    if (!Model.Genres.Any(g => g.Id == id))
-            //    {
-            //        Model.Genres.Add(new GenreDTO { Id = id });
-            //    }
-            //}
-
-            //foreach (var genre in Genres)
-            //{
-            //    if (SelectedValues.Contains(genre.Id) && !Model.Genres.Any(g => g.Id == genre.Id))
-            //    {
-            //        Model.Genres.Add(genre);
-            //    }
-            //}
+            }         
 
             if (Page.Equals(PageType.Create))
                 await AdminService.CreateAsync<FilmDTO>("film", Model);
@@ -186,79 +159,4 @@
             await OnChange.InvokeAsync("Couldn't create/edit/delete the film.");
         }
     }
-   
-
-    //private async Task OnFormSubmit()
-    //{
-    //    try
-    //    {
-    //        if (Model.Description == null)
-    //            Model.Description = "Lorem Ipsum";
-
-    //        if (Model.Director == null)
-    //            Model.DirectorId = 5;
-
-    //        Model.Genres = FilmGenres.Select(fg => new GenreDTO { Id = fg.GenreId }).ToList();
-
-    //        if (Page.Equals(PageType.Create))
-    //        {
-    //            await AdminService.CreateAsync<FilmDTO>("film", Model);
-    //            foreach (var fg in FilmGenres)
-    //            {
-    //                await AdminService.CreateAsync<FilmGenreDTO>("filmgenre", new FilmGenreDTO
-    //                    {
-    //                        FilmId = Model.Id,
-    //                        GenreId = fg.GenreId
-    //                    });
-    //            }
-    //        }
-    //        else if (Page.Equals(PageType.Edit))
-    //        {
-    //            await AdminService.EditAsync<FilmDTO>($"film/{Model.Id}", Model);
-    //            var currentFilmGenres = await AdminService.GetAsync<List<FilmGenreDTO>>($"film/{Model.Id}/genres");
-
-    //            foreach (var fg in FilmGenres)
-    //            {
-    //                if (!currentFilmGenres.Any(cfg => cfg. == fg.GenreId))
-    //                {
-    //                    await AdminService.CreateAsync<FilmGenreDTO>("filmgenre", new FilmGenreDTO
-    //                        {
-    //                            FilmId = Model.Id,
-    //                            GenreId = fg.GenreId
-    //                        });
-    //                }
-    //            }
-
-    //            foreach (var cfg in currentFilmGenres)
-    //            {
-    //                if (!FilmGenres.Any(fg => fg.GenreId == cfg.Genre.Id))
-    //                {
-    //                    await AdminService.DeleteAsync<FilmGenreDTO>($"filmgenre/{cfg.Id}");
-    //                }
-    //            }
-    //        }
-    //        else if (Page.Equals(PageType.Delete))
-    //            await AdminService.DeleteAsync<FilmDTO>($"film/{Model.Id}");
-
-    //        await OnChange.InvokeAsync("");
-    //    }
-    //    catch
-    //    {
-    //        await OnChange.InvokeAsync("Couldn't create/edit/delete the film.");
-    //    }
-    //}
-
-
-    // Update the list of genres
-    //Model.Genres = new List<GenreDTO>();
-    //foreach (var genreId in SelectedValues)
-    //{
-    //    var genre = Genres.FirstOrDefault(g => g.Id == genreId);
-    //    if (genre != null)
-    //    {
-    //        Model.Genres.Add(genre);
-    //    }
-    //}
-
-
 }
