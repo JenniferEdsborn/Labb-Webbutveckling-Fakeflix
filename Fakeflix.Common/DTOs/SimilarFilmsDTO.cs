@@ -7,6 +7,9 @@ public class SimilarFilmsDTO
 
     public FilmDTO Film { get; set; }
     public FilmDTO Similar { get; set; }
+
+	public string FilmTitle => Film?.Title;
+	public string SimilarTitle => Similar?.Title;
 }
 
 public class SimilarFilmsCreateDTO
