@@ -67,20 +67,7 @@
                     </InputSelect>
                     <i class="bi bi-caret-down"></i>
                 </div>
-            </div>
-
-            <div>
-                <label for="genres">Genres</label>
-            </div>
-
-            <div class="mb-3">
-                <InputSelect id="genres" class="form-select" @bind-Value="SelectedValues">
-                    @foreach (var genre in Genres)
-                    {
-                        <option value="@genre.Id">@genre.Name</option>
-                    }
-                </InputSelect>
-            </div>
+            </div>          
         }
         <button type="submit" class="btn btn-@(Page.Equals(PageType.Delete) ? "danger" : "primary") rounded-0">@Page</button>
     </EditForm>
@@ -96,14 +83,9 @@
     List<GenreDTO> Genres { get; set; } = new();
     List<FilmGenreCreateDTO> FilmGenres { get; set; } = new List<FilmGenreCreateDTO>();
 
-    EditContext? EditContext { get; set; }
-    public int[] SelectedValues { get; set; } = new int[] { };
 
     protected override async Task OnInitializedAsync()
     {
-        EditContext = new(SelectedValues);
-        SelectedValues = Model.Genres.Select(g => g.Id).ToArray();
-
         Directors = await AdminService.GetAsync<DirectorDTO>("director");
         Genres = await AdminService.GetAsync<GenreDTO>("genre");
         FilmGenres = await AdminService.GetAsync<FilmGenreCreateDTO>("filmgenre");
@@ -118,32 +100,6 @@
 
             if (Model.Director == null)
                 Model.DirectorId = 5;
-
-            if (SelectedValues.Length > 0)
-            {
-                foreach (var filmGenre in FilmGenres)
-                {
-                    if (filmGenre.FilmId == Model.Id)
-                    {
-                        await AdminService.DeleteAsync<FilmGenreDTO>($"filmgenre", new FilmGenreDTO
-                            {
-                                FilmId = Model.Id,
-                                GenreId = filmGenre.GenreId
-                            });
-                    }
-                }
-
-                foreach (int id in SelectedValues)
-                {
-                    GenreModel = new FilmGenreDTO
-                        {
-                            FilmId = Model.Id,
-                            GenreId = id
-                        };
-
-                    await AdminService.CreateAsync<FilmGenreDTO>("filmgenre", GenreModel);
-                }
-            }         
 
             if (Page.Equals(PageType.Create))
                 await AdminService.CreateAsync<FilmDTO>("film", Model);

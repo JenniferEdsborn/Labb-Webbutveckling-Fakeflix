@@ -3,12 +3,12 @@
 <div class="d-xl-flex justify-content-center">
 	<EditForm Model="@Model" OnValidSubmit="@OnFormSubmit" class="mb-5 border border-1 border-secondary p-2 w-25">
 		<DataAnnotationsValidator />
-		<h4>@Page SimilarFilms</h4>
+		<h4>@Page FilmGenres</h4>
 		<div class="mb-3">
 			@if (Page.Equals(PageType.Delete))
 			{
 				<div class="form-control me-2">@Films.FirstOrDefault(f => f.Id == Model.FilmId)?.Title</div>
-				<div class="form-control me-2">@Films.FirstOrDefault(f => f.Id == Model.SimilarFilmId)?.Title</div>
+				<div class="form-control me-2">@Genres.FirstOrDefault(f => f.Id == Model.GenreId)?.Name</div>
 			}
 			else
 			{
@@ -19,31 +19,32 @@
 						<option value="@film.Id">@film.Title</option>
 					}
 				</InputSelect>
-				<InputSelect @bind-Value="Model.SimilarFilmId" class="form-control mb-3">
-					<option value=0>Similar Film</option>
-					@foreach (var film in Films)
+				<InputSelect @bind-Value="Model.GenreId" class="form-control mb-3">
+					<option value=0>Genre</option>
+					@foreach (var genre in Genres)
 					{
-						<option value="@film.Id">@film.Title</option>
+						<option value="@genre.Id">@genre.Name</option>
 					}
 				</InputSelect>
 			}
 			<ValidationMessage For="@(() => Model.FilmId)" />
-			<ValidationMessage For="@(() => Model.SimilarFilmId)" />
+			<ValidationMessage For="@(() => Model.GenreId)" />
 		</div>
 		<button type="submit" class="btn btn-@(Page.Equals(PageType.Delete) ? "danger" : "primary") rounded-0">@Page</button>
 	</EditForm>
 </div>
 
 @code {
-	[Parameter] public SimilarFilmsDTO Model { get; set; } = new();
+	[Parameter] public FilmGenreDTO Model { get; set; } = new();
 	[Parameter] public string Page { get; set; } = string.Empty;
 	[Parameter] public EventCallback<string> OnChange { get; set; }
-
 	List<FilmDTO> Films { get; set; } = new();
+	List<GenreDTO> Genres { get; set; } = new();
 
 	protected override async Task OnInitializedAsync()
 	{
 		Films = await AdminService.GetAsync<FilmDTO>("film");
+		Genres = await AdminService.GetAsync<GenreDTO>("genre");
 	}
 
 	private async Task OnFormSubmit()
@@ -51,18 +52,18 @@
 		try
 		{
 			if (Page.Equals(PageType.Create))
-				await AdminService.CreateAsync<SimilarFilmsDTO>("similarfilms", Model);
+				await AdminService.CreateAsync<FilmGenreDTO>("filmgenre", Model);
 			else if (Page.Equals(PageType.Delete))
-				await AdminService.DeleteAsync<SimilarFilmsDTO>($"similarfilms", new SimilarFilmsDTO
+				await AdminService.DeleteAsync<FilmGenreDTO>($"filmgenre", new FilmGenreDTO
 					{
 						FilmId = Model.FilmId,
-						SimilarFilmId = Model.SimilarFilmId
+						GenreId = Model.GenreId
 					});
 			await OnChange.InvokeAsync("");
 		}
 		catch
 		{
-			await OnChange.InvokeAsync("Couldn't create/delete the SimilarFilm.");
+			await OnChange.InvokeAsync("Couldn't create/delete the FilmGenre.");
 		}
 	}
 }
