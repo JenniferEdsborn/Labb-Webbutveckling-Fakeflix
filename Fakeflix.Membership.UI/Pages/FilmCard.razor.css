@@ -1,0 +1,23 @@
+﻿body {
+}
+
+.genre-header {
+    display: block;
+    margin-left: 10px;
+}
+
+.card{
+    height: 200px;
+    width: 250px;
+    background-color: black;
+    transition: all 0.2s ease-in-out;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+.card:hover{
+    transform: scale(1.05);
+}

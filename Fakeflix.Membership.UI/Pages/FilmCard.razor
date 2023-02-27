@@ -1,0 +1,13 @@
+﻿
+<a href="Film/@Film.Id">
+    <div class="card bg-dark text-white rounded">
+        @*<img class="card-img-top rounded-0" src="@Film.ImageUrl">*@
+        <div class="card-body d-flex flex-column justify-content-end align-bottom text-left">
+            <h5 class="card-title text-truncate">@Film.Title</h5>
+        </div>
+    </div>
+</a>
+
+@code {
+    [Parameter] public FilmDTO Film { get; set; } = new();
+}

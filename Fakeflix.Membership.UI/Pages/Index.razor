@@ -1,0 +1,39 @@
+﻿@inject IMembershipService MembershipService
+
+@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<div class="d-flex flex-column justify-content-left">
+    @foreach (var genre in Genres)
+    {
+        var filmIds = FilmGenres.Where(fg => fg.GenreId == genre.Id).Select(fg => fg.FilmId).ToList();
+        var matchingFilms = Films.Where(f => filmIds.Contains(f.Id)).ToList();
+
+        if (matchingFilms.Count > 0)
+        {
+            <h2 class="genre">@genre.Name</h2>
+            <div class="d-flex flex-wrap justify-content-left">
+                @foreach (var film in matchingFilms)
+                {
+                    <div class="m-2">
+                        <FilmCard Film="@film" />
+                    </div>
+                }
+            </div>
+        }
+    }
+</div>
+
+@code {
+    public List<FilmDTO> Films { get; set; } = new();
+    public List<GenreDTO> Genres { get; set; } = new();
+    public List<FilmGenreDTO> FilmGenres { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Films = await MembershipService.GetFilmsAsync();
+        Genres = await MembershipService.GetGenresAsync();
+        FilmGenres = await MembershipService.GetFilmGenresAsync();
+    }
+}
