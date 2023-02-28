@@ -2,8 +2,12 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    background-color: black !important;
+    min-height: 100vh;
+}
+
+body{
     background-color: black;
-    height: 100vh;
 }
 
 main {
@@ -15,7 +19,7 @@ main {
 }
 
 .top-row {
-    background-color: #000f;
+    background-color: black;
     border-bottom: 1px solid #fff;
     height: 3.5rem;
     display: flex;

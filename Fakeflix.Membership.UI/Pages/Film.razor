@@ -1,0 +1,37 @@
+﻿@inject IMembershipService MembershipService
+
+@page "/Film/{Id:int}"
+
+<a href="@("/")" class="d-flex align-items-center back-link bg-dark rounded align-items-end">
+    <div class="card-body d-flex justify-content-center align-items-center">
+        <h5 class="oi oi-arrow-circle-left">  Start</h5>
+    </div>
+</a>
+
+<div class="d-flex flex-column">
+
+    <div class="card flex-fill rounded-0">
+        @if (Model.FilmUrl != null)
+        {
+            <h1>Movie url here</h1>
+            <button>Play button here with link to Play/id</button>
+        }
+        <div class="card-body">
+            <h2>@Model.Title</h2>
+            <h4>by @Model.Director</h4>
+            <hr class="m-0">
+            @Model.Description
+        </div>
+    </div>
+    <h2>Similarfilms</h2>
+</div>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    public FilmDTO Model { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Model = await MembershipService.GetFilmAsync(Id);
+    }
+}

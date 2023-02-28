@@ -1,28 +1,35 @@
 ﻿@inject IMembershipService MembershipService
-
 @page "/"
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Fakeflix</PageTitle>
 
-<div class="d-flex flex-column justify-content-left">
-    @foreach (var genre in Genres)
-    {
-        var filmIds = FilmGenres.Where(fg => fg.GenreId == genre.Id).Select(fg => fg.FilmId).ToList();
-        var matchingFilms = Films.Where(f => filmIds.Contains(f.Id)).ToList();
-
-        if (matchingFilms.Count > 0)
+<div class="film-cards-container">
+    <div class="d-flex flex-column justify-content-left film-cards-wrapper">
+        @foreach (var genre in Genres)
         {
-            <h2 class="genre">@genre.Name</h2>
-            <div class="d-flex flex-wrap justify-content-left">
-                @foreach (var film in matchingFilms)
-                {
-                    <div class="m-2">
-                        <FilmCard Film="@film" />
-                    </div>
-                }
-            </div>
+            var filmIds = FilmGenres.Where(fg => fg.GenreId == genre.Id).Select(fg => fg.FilmId).ToList();
+            var matchingFilms = Films.Where(f => filmIds.Contains(f.Id)).ToList();
+
+            if (matchingFilms.Count > 0)
+            {
+                <h2 class="genre">@genre.Name</h2>
+
+                <div class="d-flex flex-wrap justify-content-left align-items-start">
+                    @foreach (var film in matchingFilms.Take(4).OrderBy(x => Guid.NewGuid()).ToList())
+                    {
+                        <div class="m-2">
+                            <FilmCard Film="@film" />
+                        </div>
+                    }
+                    <a href="@($"Genre/{genre.Name}")" class="d-flex align-items-center genre-link bg-dark rounded align-items-end">
+                        <div class="card-body d-flex justify-content-center align-items-center">
+                            <h5 class="genre-arrow oi oi-arrow-circle-right"></h5>
+                        </div>
+                    </a>
+                </div>
+            }
         }
-    }
+    </div>
 </div>
 
 @code {

@@ -1,0 +1,30 @@
+﻿body {
+}
+
+.film-cards-container {
+    overflow-x: auto;
+    white-space: nowrap;
+    position: relative;
+}
+
+.film-cards-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.genre-link {
+    height: 200px;
+    width: 50px;
+    background-color: black;
+    transition: all 0.2s ease-in-out;
+    margin-top: 8px;
+}
+
+.genre-link:hover {
+    transform: scale(1.05);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
