@@ -3,7 +3,11 @@
     width: 350px;
     background-color: black;
     transition: all 0.2s ease-in-out;
-    cursor: pointer;
+    cursor: pointer !important;
+}
+
+.card img{
+    cursor:pointer;
 }
 
 a {

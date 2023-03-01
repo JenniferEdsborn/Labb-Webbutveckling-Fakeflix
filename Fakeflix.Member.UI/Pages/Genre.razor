@@ -1,11 +1,11 @@
 ﻿@inject IMembershipService MembershipService
+@inject NavigationManager NavigationManager
 
 @page "/Genre/{genre}"
 
-<a href="@("/")" class="d-flex align-items-center back-link bg-dark rounded align-items-end">
-    <div class="card-body d-flex justify-content-center align-items-center">
-        <h5 class="oi oi-arrow-circle-left">  Start</h5>
-    </div>
+<a href="@("/")" class="btn btn-primary">
+    <span class="oi oi-arrow-left me-2"></span>
+    Back to Dashboard
 </a>
 
 <div class="film-cards-container">
@@ -15,7 +15,7 @@
             @foreach (var film in matchingFilms)
             {
                 <div class="m-2">
-                    <FilmCard Film="@film" />
+                    <FilmCard Film="@film" OnClick="NavigateToFilmPage" />
                 </div>
             }
         </div>
@@ -34,13 +34,19 @@
         var filmGenres = await MembershipService.GetFilmGenresAsync();
 
         Genres = genres.FirstOrDefault(g => g.Name == genre);
-        if (Genres == null)
+        if (Genres != null)
         {
-            // handle error: genre not found
-            return;
+            var filmIds = filmGenres.Where(fg => fg.GenreId == Genres.Id).Select(fg => fg.FilmId).ToList();
+            matchingFilms = films.Where(f => filmIds.Contains(f.Id)).ToList();
         }
+        else
+        {
+            NavigationManager.NavigateTo("/");
+        }
+    }
 
-        var filmIds = filmGenres.Where(fg => fg.GenreId == Genres.Id).Select(fg => fg.FilmId).ToList();
-        matchingFilms = films.Where(f => filmIds.Contains(f.Id)).ToList();
+    private void NavigateToFilmPage(FilmDTO film)
+    {
+        NavigationManager.NavigateTo($"/Film/{film.Id}");
     }
 }
