@@ -23,11 +23,13 @@ public class FilmCreateDTO
     public string Description { get; set; }
     public string FilmUrl { get; set; }
     public int DirectorId { get; set; }
-    public string? MarqueeImgUrl { get; set; } = "Images/marquee.png";
-    public string? ImgUrl { get; set; } = "Images/img.jpg";
+    public string? MarqueeImgUrl { get; set; } = "/images/marquee.png";
+    public string? ImgUrl { get; set; } = "/images/img.jpg";
 }
 
 public class FilmEditDTO : FilmCreateDTO
 {
     public int Id { get; set; }
+
+    public FilmEditDTO() : base() { }
 }

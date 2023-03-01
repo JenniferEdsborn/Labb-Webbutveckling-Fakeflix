@@ -4,9 +4,25 @@
     <img class="marquee-img" src="@Model.MarqueeImgUrl" />
     <div class="card">
         <div>
-            <h1>@Model.Title</h1>
-            <h4>by @(Model?.Director?.Name ?? string.Empty)</h4>
-            <h4>@(Model?.Description ?? string.Empty)</h4>
+            <h1 style="margin-bottom: 10px;">@Model.Title</h1>
+            <h5>Released: @Model.Released.ToShortDateString()</h5>
+            <h5>
+            Genres:
+            @if (Model?.Genres != null && Model.Genres.Count > 0)
+            {
+                var genreNames = (from fg in FilmGenres
+                                  join g in Genres on fg.GenreId equals g.Id
+                                  where fg.FilmId == Model.Id
+                                  select g.Name).ToList();
+                <span>@string.Join(", ", genreNames)</span>
+            }
+            else
+            {
+                <span>No genres found for this film.</span>
+            }
+            </h5>
+            <h5>Director: @(Model?.Director?.Name ?? string.Empty)</h5>           
+            <h3 style="margin-top: 25px;">@(Model?.Description ?? string.Empty)</h3>
         </div>
         @if (Model?.FilmUrl != null)
         {
@@ -23,15 +39,13 @@
 @code {
     [Parameter] public FilmDTO Model { get; set; } = new();
     List<DirectorDTO> Directors { get; set; } = new();
+    List<GenreDTO> Genres { get; set; } = new();
+    List<FilmGenreDTO> FilmGenres { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
         Directors = await MembershipService.GetDirectorsAsync();
+        Genres = await MembershipService.GetGenresAsync();
+        FilmGenres = await MembershipService.GetFilmGenresAsync();
     }
-
-    //protected override async Task OnParametersSetAsync()
-    //{
-    //    Model = await MembershipService.GetFilmAsync(Model.Id);
-    //    StateHasChanged();
-    //}
 }

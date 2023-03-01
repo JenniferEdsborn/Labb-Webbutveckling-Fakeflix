@@ -67,17 +67,7 @@
                     </InputSelect>
                     <i class="bi bi-caret-down"></i>
                 </div>
-            </div>
-            
-            <div class="mb-3">
-                <InputText id="filmurl" class="form-control me-2" @bind-Value="Model.MarqueeImgUrl" placeholder="MarqueeImgUrl"></InputText>
-                <ValidationMessage For="@(() => Model.MarqueeImgUrl)" />
-            </div>
-
-            <div class="mb-3">
-                <InputText id="filmurl" class="form-control me-2" @bind-Value="Model.ImgUrl" placeholder="ImgUrl"></InputText>
-                <ValidationMessage For="@(() => Model.ImgUrl)" />
-            </div>
+            </div>           
         }
         <button type="submit" class="btn btn-@(Page.Equals(PageType.Delete) ? "danger" : "primary") rounded-0">@Page</button>
     </EditForm>
@@ -112,7 +102,7 @@
                 Model.DirectorId = 5;
 
             if (Page.Equals(PageType.Create))
-                await AdminService.CreateAsync<FilmDTO>("film", Model);
+                await AdminService.CreateAsync<FilmDTO>("film", Model);        
             else if (Page.Equals(PageType.Edit))
                 await AdminService.EditAsync<FilmDTO>($"film/{Model.Id}", Model);
             else if (Page.Equals(PageType.Delete))
