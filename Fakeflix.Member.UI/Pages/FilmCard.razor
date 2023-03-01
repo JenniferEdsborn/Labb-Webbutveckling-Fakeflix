@@ -1,0 +1,56 @@
+﻿<div class="card bg-dark text-white rounded" @onclick="HandleClick">
+    <img class="card-img-top" src="@Film.ImgUrl">
+    <div class="position-relative">
+        <div class="card-body d-flex flex-column justify-content-end align-bottom text-left" style="position: absolute; bottom: 0; width: 100%; padding: 0;">
+            <h5 class="card-title position-absolute bottom-0 start-0 bg-dark bg-opacity-75 text-white p-2 m-0" style="width: 100%;">@Film.Title</h5>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public FilmDTO Film { get; set; }
+    [Parameter] public EventCallback<FilmDTO> OnClick { get; set; }
+
+    private async Task HandleClick()
+    {
+        await OnClick.InvokeAsync(Film);
+    }
+}
+
+
+@*@inject NavigationManager NavigationManager
+
+<div class="card bg-dark text-white rounded" @onclick="NavigateToFilmPage">
+    <img class="card-img-top" src="@Film.ImgUrl">
+    <div class="position-relative">
+        <div class="card-body d-flex flex-column justify-content-end align-bottom text-left" style="position: absolute; bottom: 0; width: 100%; padding: 0;">
+            <h5 class="card-title position-absolute bottom-0 start-0 bg-dark bg-opacity-75 text-white p-2 m-0" style="width: 100%;">@Film.Title</h5>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public FilmDTO Film { get; set; }
+
+    private void NavigateToFilmPage()
+    {
+        NavigationManager.NavigateTo($"/Film/{Film.Id}");
+    }
+}*@
+
+
+@*<a href="Film/@Film.Id">
+    <div class="card bg-dark text-white rounded">
+        <img class="card-img-top" src="@Film.ImgUrl">
+        <div class="position-relative">
+            <div class="card-body d-flex flex-column justify-content-end align-bottom text-left" style="position: absolute; bottom: 0; width: 100%; padding: 0;">
+                <h5 class="card-title position-absolute bottom-0 start-0 bg-dark bg-opacity-75 text-white p-2 m-0" style="width: 100%;">@Film.Title</h5>
+            </div>
+        </div>
+    </div>
+</a>
+
+@code {
+    [Parameter] public FilmDTO Film { get; set; } = new();
+}
+*@

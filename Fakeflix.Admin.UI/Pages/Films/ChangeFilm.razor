@@ -67,7 +67,17 @@
                     </InputSelect>
                     <i class="bi bi-caret-down"></i>
                 </div>
-            </div>          
+            </div>
+            
+            <div class="mb-3">
+                <InputText id="filmurl" class="form-control me-2" @bind-Value="Model.MarqueeImgUrl" placeholder="MarqueeImgUrl"></InputText>
+                <ValidationMessage For="@(() => Model.MarqueeImgUrl)" />
+            </div>
+
+            <div class="mb-3">
+                <InputText id="filmurl" class="form-control me-2" @bind-Value="Model.ImgUrl" placeholder="ImgUrl"></InputText>
+                <ValidationMessage For="@(() => Model.ImgUrl)" />
+            </div>
         }
         <button type="submit" class="btn btn-@(Page.Equals(PageType.Delete) ? "danger" : "primary") rounded-0">@Page</button>
     </EditForm>

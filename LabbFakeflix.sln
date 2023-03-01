@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fakeflix.Membership.Databas
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fakeflix.Membership.API", "Fakeflix.Membership.API\Fakeflix.Membership.API.csproj", "{559ED083-F1CA-4C34-B863-82E1C49A3636}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fakeflix.Membership.UI", "Fakeflix.Membership.UI\Fakeflix.Membership.UI.csproj", "{75012030-C73A-4FD8-B6F2-E96482FE8509}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fakeflix.Member.UI", "Fakeflix.Member.UI\Fakeflix.Member.UI.csproj", "{95D34021-B2AF-4C5C-91E9-67B5C08EAF68}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{559ED083-F1CA-4C34-B863-82E1C49A3636}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{559ED083-F1CA-4C34-B863-82E1C49A3636}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{559ED083-F1CA-4C34-B863-82E1C49A3636}.Release|Any CPU.Build.0 = Release|Any CPU
-		{75012030-C73A-4FD8-B6F2-E96482FE8509}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{75012030-C73A-4FD8-B6F2-E96482FE8509}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{75012030-C73A-4FD8-B6F2-E96482FE8509}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{75012030-C73A-4FD8-B6F2-E96482FE8509}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95D34021-B2AF-4C5C-91E9-67B5C08EAF68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95D34021-B2AF-4C5C-91E9-67B5C08EAF68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95D34021-B2AF-4C5C-91E9-67B5C08EAF68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95D34021-B2AF-4C5C-91E9-67B5C08EAF68}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

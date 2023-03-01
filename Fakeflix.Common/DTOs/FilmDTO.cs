@@ -11,7 +11,9 @@ public class FilmDTO
     public int? DirectorId { get; set; }
     public DirectorDTO? Director { get; set; }
     public List<GenreDTO>? Genres { get; set; } = new();
-    public List<SimilarFilmsDTO>? SimilarFilms { get; set; } = new(); 
+    public List<SimilarFilmsDTO>? SimilarFilms { get; set; } = new();
+    public string? MarqueeImgUrl { get; set; } = "/images/marquee.png";
+    public string? ImgUrl { get; set; } = "/images/img.jpg";
 }
 public class FilmCreateDTO
 {
@@ -21,6 +23,8 @@ public class FilmCreateDTO
     public string Description { get; set; }
     public string FilmUrl { get; set; }
     public int DirectorId { get; set; }
+    public string? MarqueeImgUrl { get; set; } = "Images/marquee.png";
+    public string? ImgUrl { get; set; } = "Images/img.jpg";
 }
 
 public class FilmEditDTO : FilmCreateDTO

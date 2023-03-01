@@ -1,0 +1,16 @@
+﻿.card {
+    height: 200px;
+    width: 350px;
+    background-color: black;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}

@@ -1,0 +1,53 @@
+﻿@inject IMembershipService MembershipService
+
+@page "/Film/{Id:int}"
+
+<a href="@("/")" class="d-flex align-items-center back-link bg-dark rounded align-items-end">
+    <div class="card-body d-flex justify-content-center align-items-center">
+        <h5 class="oi oi-arrow-circle-left">  Start</h5>
+    </div>
+</a>
+
+
+<div class="d-flex flex-column">
+    <Marquee Model="Model" />
+    <div class="film-cards-container">
+        <h2>Other films like @Model.Title</h2>
+        <div class="d-flex flex-row justify-content-start flex-wrap">
+            @if (SimilarFilms != null)
+            {
+                var similarFilms = Films.Where(f =>
+                SimilarFilms.Any(sf => sf.SimilarFilmId == f.Id) && f.Id != Model.Id)
+                .ToList();
+                var randomFilms = similarFilms.OrderBy(f => Guid.NewGuid()).Take(4);
+
+                @foreach (var film in randomFilms)
+                {
+                    <div class="m-1">
+                        <FilmCard Film="@film" OnClick="UpdateModel" />
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    public FilmDTO Model { get; set; } = new();
+    List<SimilarFilmsDTO> SimilarFilms { get; set; } = new();
+    List<FilmDTO> Films { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Model = await MembershipService.GetFilmAsync(Id);
+
+        SimilarFilms = await MembershipService.GetSimilarFilmsAsync();
+        Films = await MembershipService.GetFilmsAsync();
+    }
+
+    private void UpdateModel(FilmDTO film)
+    {
+        Model = film;
+    }
+}

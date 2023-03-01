@@ -1,0 +1,25 @@
+﻿.back-link {
+    width: 100px;
+    height: 50px;
+    transition: all 0.2s ease-in-out;
+}
+
+    .back-link:hover {
+        transform: scale(1.05);
+    }
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.genre-link {
+    height: 200px;
+    width: 50px;
+    background-color: black;
+    margin-top: 8px;
+}
+
+.film-card {
+    margin: 10px;
+}

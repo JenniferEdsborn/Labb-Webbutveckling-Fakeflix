@@ -3,14 +3,10 @@
 public class MembershipService : IMembershipService
 {
     protected readonly MembershipHttpClient _http;
-    //private readonly IStorageService _storage;
-    //protected readonly ILocalStorageService _localStorage;
 
     public MembershipService(MembershipHttpClient httpClient)
     {
         _http = httpClient;
-        //_storage = storage;
-        //_localStorage = localStorage;
     }
 
     public async Task<List<FilmDTO>> GetFilmsAsync()
@@ -72,6 +68,38 @@ public class MembershipService : IMembershipService
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             return result ?? new List<FilmGenreDTO>();
+
+        }
+        catch { throw; }
+    }
+
+    public async Task<List<SimilarFilmsDTO>> GetSimilarFilmsAsync()
+    {
+        try
+        {
+            using HttpResponseMessage response = await _http.Client.GetAsync("similarfilms");
+            response.EnsureSuccessStatusCode();
+
+            var result = JsonSerializer.Deserialize<List<SimilarFilmsDTO>>(await response.Content.ReadAsStreamAsync(),
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            return result ?? new List<SimilarFilmsDTO>();
+
+        }
+        catch { throw; }
+    }
+
+    public async Task<List<DirectorDTO>> GetDirectorsAsync()
+    {
+        try
+        {
+            using HttpResponseMessage response = await _http.Client.GetAsync("director");
+            response.EnsureSuccessStatusCode();
+
+            var result = JsonSerializer.Deserialize<List<DirectorDTO>>(await response.Content.ReadAsStreamAsync(),
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            return result ?? new List<DirectorDTO>();
 
         }
         catch { throw; }

@@ -1,0 +1,30 @@
+﻿.back-link {
+    width: 100px;
+    height: 50px;
+    transition: all 0.2s ease-in-out;
+}
+
+    .back-link:hover {
+        transform: scale(1.05);
+    }
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.film-cards-container {
+    margin-top: 20px;
+}
+
+    .film-cards-container h2 {
+        margin-bottom: 10px;
+    }
+
+    .film-cards-container .flex-row {
+        margin-top: 20px;
+    }
+
+        .film-cards-container .flex-row .m-2 {
+            width: 25%;
+        }

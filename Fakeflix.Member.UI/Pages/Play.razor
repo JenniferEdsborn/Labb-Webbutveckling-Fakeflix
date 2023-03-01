@@ -1,6 +1,6 @@
 ﻿@inject IMembershipService MembershipService
 
-@page "/Film/{Id:int}"
+@page "/Play/{Id:int}"
 
 <a href="@("/")" class="d-flex align-items-center back-link bg-dark rounded align-items-end">
     <div class="card-body d-flex justify-content-center align-items-center">
@@ -9,16 +9,13 @@
 </a>
 
 <div class="d-flex flex-column">
-@*
-    <Marquee CurrentFilm="Model"/>*@
 
     <div class="card flex-fill rounded-0">
         @if (Model.FilmUrl != null)
         {
-            <h1>Movie url here</h1>
-            <a href="Play/@Model.Id">
-<h1>"Play button here with link to Play/id"</h1>
-</a>
+            <div class="video-player">
+                <iframe src="@Model.FilmUrl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
         }
         <div class="card-body">
             <h2>@Model.Title</h2>
@@ -27,7 +24,6 @@
             @Model.Description
         </div>
     </div>
-    <h2>Similarfilms</h2>
 </div>
 
 @code {

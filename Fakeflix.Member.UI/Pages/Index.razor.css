@@ -17,9 +17,9 @@
     margin-top: 8px;
 }
 
-.genre-link:hover {
-    transform: scale(1.05);
-}
+    .genre-link:hover {
+        transform: scale(1.05);
+    }
 
 a {
     text-decoration: none;
